@@ -1,7 +1,6 @@
 require 'rspec'
 require_relative 'card'
 require_relative 'hand'
-require_relative 'high_card'
 
 class PokerHands
   BLACK = 'Black'
@@ -43,7 +42,7 @@ describe PokerHands do
       end
 
       context 'when both hands have the same highest card' do
-        it 'wins the hand with the seconf highest card' do
+        it 'wins the hand with the second highest card' do
           hand_player1 = %w(2H 3D 5S 9C AD)
           hand_player2 = %w(2C 3H 4S 8C AH)
 
@@ -51,7 +50,7 @@ describe PokerHands do
         end
       end
 
-      context 'when both hand have the same cards values' do
+      context 'when both hands have the same cards values' do
         it 'the result is tie' do
           hand_player1 = %w(2H 3D 5S 9C AD)
           hand_player2 = %w(2C 3H 5S 9C AH)
