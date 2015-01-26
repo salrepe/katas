@@ -1,19 +1,17 @@
 class HighCard
-  CARDS_ORDER = %w(2 3 4 5 6 7 8 9 T J Q K A)
-
-  def self.calculate(cards_hand1, cards_hand2)
-    new(cards_hand1, cards_hand2).calculate
+  def self.calculate(cards_black, cards_white)
+    new(cards_black, cards_white).calculate
   end
 
-  def initialize(cards_hand1, cards_hand2)
-    @cards_hand1 = cards_hand1
-    @cards_hand2 = cards_hand2
-    @high_card_hand1 = calculate_highest_card_for(cards_hand1)
-    @high_card_hand2 = calculate_highest_card_for(cards_hand2)
+  def initialize(cards_black, cards_white)
+    @cards_black = cards_black
+    @cards_white = cards_white
+    @high_card_black = calculate_highest_card_for(cards_black)
+    @high_card_white = calculate_highest_card_for(cards_white)
   end
 
   def calculate
-    return unless high_card_hand1 || high_card_hand2
+    return unless high_card_black || high_card_white
 
     if highest_card_in_both_hands?
       recalculate_high_card
@@ -24,18 +22,18 @@ class HighCard
 
   private
 
-  attr_reader :cards_hand1, :cards_hand2
-  attr_reader :high_card_hand1, :high_card_hand2
+  attr_reader :cards_black, :cards_white
+  attr_reader :high_card_black, :high_card_white
 
   def highest_card_in_both_hands?
-    highest_card_equal_to?(high_card_hand1) &&
-      highest_card_equal_to?(high_card_hand2)
+    highest_card_equal_to?(high_card_black) &&
+      highest_card_equal_to?(high_card_white)
   end
 
   def recalculate_high_card
     self.class.calculate(
-      remove_highest_card_from(cards_hand1),
-      remove_highest_card_from(cards_hand2)
+      remove_highest_card_from(cards_black),
+      remove_highest_card_from(cards_white)
     )
   end
 
@@ -50,13 +48,15 @@ class HighCard
   end
 
   def highest_card
-    two_hands_higest_cards = [high_card_hand1, high_card_hand2]
+    two_hands_higest_cards = [high_card_black, high_card_white]
     calculate_highest_card_for(two_hands_higest_cards)
   end
 
   def calculate_highest_card_for(cards)
-    cards.sort_by do |card|
-      CARDS_ORDER.index(card.value)
-    end.last
+    highest_card = cards.first
+    cards.each do |card|
+      highest_card = card if card > highest_card
+    end
+    highest_card
   end
 end

@@ -5,21 +5,13 @@ class Hand
     @best_rank = nil
   end
 
-  attr_accessor :best_rank
-
   def cards
     @representation.map { |h| Card.new(h) }
   end
 
   def > other
-    result = false
-    high_card = HighCard.calculate(cards, other.cards)
-    other.best_rank = high_card
-    if cards.include?(high_card)
-      @best_rank = high_card
-      result = true
-    end
-    result
+    @best_rank = HighCard.calculate(cards, other.cards)
+    cards.include?(@best_rank)
   end
 
   def rank
