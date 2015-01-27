@@ -1,3 +1,5 @@
+require_relative 'high_card'
+
 class Hand
   def initialize(name, representation)
     @name = name
@@ -5,32 +7,23 @@ class Hand
     @best_rank = nil
   end
 
-  attr_accessor :best_rank
   attr_reader :cards
 
   def > other
-    @best_rank = evaluate_high_card(other)
-    !@best_rank.nil?
+    high_card > other.high_card
   end
 
   def rank
-    "#{@name} wins - with high card: #{@best_rank.value}"
+    "#{@name} wins - with #{high_card.rank}"
   end
 
-  def evaluate_high_card(other)
-    winner = nil
-    cards.each_index do |index|
-      if cards[index] > other.cards[index]
-        winner = cards[index]
-        break
-      end
-    end
-    winner
+  def high_card
+    @high_card ||= HighCard.new(self.cards)
   end
 
   private
 
   def parse(representation)
-    representation.map { |h| Card.new(h) }.sort.reverse
+    representation.map { |h| Card.new(h) }
   end
 end
