@@ -1,24 +1,23 @@
-require_relative 'high_card'
+require_relative 'rank'
 
 class Hand
   def initialize(name, representation)
     @name = name
     @cards = parse(representation)
-    @best_rank = nil
   end
 
   attr_reader :cards
 
   def > other
-    high_card > other.high_card
+    rank > other.rank
   end
 
   def rank
-    "#{@name} wins - with #{high_card.rank}"
+    @rank ||= Rank.new(self)
   end
 
-  def high_card
-    @high_card ||= HighCard.new(self.cards)
+  def rank_result
+    "#{@name} wins - with #{@rank.result}"
   end
 
   private

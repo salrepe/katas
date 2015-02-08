@@ -1,22 +1,28 @@
 class HighCard
   def initialize(cards)
     @cards = cards.sort.reverse
-    @winner = nil
   end
 
   attr_reader :cards
 
   def > other
-    cards.each_index do |index|
-      if cards[index] > other.cards[index]
-        @winner = cards[index]
-        break
-      end
-    end
-    !@winner.nil?
+    !!highest_card(other)
   end
 
-  def rank
-    "high card: #{@winner.value}"
+  def exists?
+    true
+  end
+
+  def result
+    "high card: #{@highest_card.value}"
+  end
+
+  private
+
+  def highest_card(other)
+    @highest_card ||= @cards.detect do |card|
+      index = cards.index(card)
+      cards[index] > other.cards[index]
+    end
   end
 end

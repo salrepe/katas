@@ -17,7 +17,7 @@ class Card
 
   def == (other_card)
     return false unless other_card
-    (suit == other_card.suit) && (value == other_card.value)
+    value == other_card.value
   end
 
   def > other
